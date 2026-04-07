@@ -35,13 +35,16 @@ namespace EShop.Infraestructure.Persistence
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnName("FECHA_CREACION")
+                    .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc))
                     .HasDefaultValueSql("SYSDATE");
 
                 entity.Property(e => e.FechaExpiracion)
-                    .HasColumnName("FECHA_EXPIRACION");
+                    .HasColumnName("FECHA_EXPIRACION")
+                    .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
                 entity.Property(e => e.FechaActualizacion)
-                    .HasColumnName("FECHA_ACTUALIZACION");
+                    .HasColumnName("FECHA_ACTUALIZACION")
+                    .HasConversion(v => v, v => DateTime.SpecifyKind((DateTime)v, DateTimeKind.Utc));
 
                 entity.HasIndex(e => e.Jti)
                     .IsUnique();

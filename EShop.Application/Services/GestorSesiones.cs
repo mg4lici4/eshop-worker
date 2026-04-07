@@ -7,7 +7,7 @@ namespace EShop.Application.Services
     {
         public async Task EliminarExpiradas()
         {
-            var sesiones = await sesionRepository.ObtenerRegistrosAsync();
+            await sesionRepository.InactivarExpiradasAsync();
         }
     }
 }

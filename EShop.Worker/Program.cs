@@ -1,8 +1,8 @@
 using EShop.Application.Interfaces.Repositories;
 using EShop.Application.Interfaces.Services;
 using EShop.Application.Services;
-using EShop.Infraestructure;
 using EShop.Infraestructure.Persistence;
+using EShop.Infraestructure.Repositories;
 using EShop.Worker;
 using Microsoft.EntityFrameworkCore;
 
