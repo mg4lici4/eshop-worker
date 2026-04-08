@@ -44,7 +44,7 @@ namespace EShop.Infraestructure.Persistence
 
                 entity.Property(e => e.FechaActualizacion)
                     .HasColumnName("FECHA_ACTUALIZACION")
-                    .HasConversion(v => v, v => DateTime.SpecifyKind((DateTime)v, DateTimeKind.Utc));
+                    .HasConversion(v => v, v => DateTime.SpecifyKind((DateTime)v!, DateTimeKind.Utc));
 
                 entity.HasIndex(e => e.Jti)
                     .IsUnique();
