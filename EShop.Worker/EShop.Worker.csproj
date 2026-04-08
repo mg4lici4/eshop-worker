@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-EShop.Worker-5626f282-0c27-4c05-bbe3-31a23099e36e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+	<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EShop.Application\EShop.Application.csproj" />
+    <ProjectReference Include="..\EShop.Infraestructure\EShop.Infraestructure.csproj" />
+  </ItemGroup>
+</Project>
