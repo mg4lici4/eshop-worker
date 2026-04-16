@@ -10,11 +10,11 @@ namespace EShop.Worker
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    await gestorSesiones.EliminarExpiradas();
                     if (logger.IsEnabled(LogLevel.Information))
                     {
                         logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                     }
+                    await gestorSesiones.EliminarExpiradas();
                     await Task.Delay(1000, stoppingToken);
                 }
             }
