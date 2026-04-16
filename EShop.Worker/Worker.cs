@@ -1,3 +1,4 @@
+using EShop.Application.Helpers;
 using EShop.Application.Interfaces.Services;
 
 namespace EShop.Worker
@@ -8,24 +9,32 @@ namespace EShop.Worker
         {
             try
             {
+                logger.LogInformation("Inicio de ejecución de worker: {time}", FechaHelper.ActualUTC());
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    if (logger.IsEnabled(LogLevel.Information))
+                    try
                     {
-                        logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                        await gestorSesiones.EliminarExpiradas();
                     }
-                    await gestorSesiones.EliminarExpiradas();
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError("Message: {Message}, StackTrace: {e.StackTrace}", e.Message, e.StackTrace);
+                    }
+                    
                     await Task.Delay(1000, stoppingToken);
-                }
+                }                               
             }
             catch (OperationCanceledException)
             {
-                // cancelación normal
+                logger.LogInformation("Servicio detenido. Liberando recursos, cerrando conexiones...");
             }
             finally
             {
-                // 👇 AQUÍ va la lógica de apagado
-                Console.WriteLine("Liberando recursos, cerrando conexiones...");
+                logger.LogInformation("Liberando recursos, cerrando conexiones...");
             }
         }
     }

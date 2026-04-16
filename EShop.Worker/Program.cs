@@ -5,6 +5,8 @@ using EShop.Infraestructure.Persistence;
 using EShop.Infraestructure.Repositories;
 using EShop.Worker;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 
 const string ESHOP_BD= "EShop_Worker";
 
@@ -15,6 +17,15 @@ builder.Services.AddWindowsService(options =>
 {
     options.ServiceName = "Worker EShop";
 });
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+    .WriteTo.File(Path.Combine(AppContext.BaseDirectory, "logs", "log-.txt"), rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Logging.AddSerilog();
 
 builder.Services.AddDbContextFactory<EShopDbContext>(options =>
                     options.UseOracle(builder.Configuration.GetConnectionString(ESHOP_BD)));
