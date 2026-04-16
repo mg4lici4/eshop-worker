@@ -6,7 +6,7 @@ using EShop.Infraestructure.Repositories;
 using EShop.Worker;
 using Microsoft.EntityFrameworkCore;
 
-const string ESHOP_BD= "EShop";
+const string ESHOP_BD= "EShop_Worker";
 
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -16,10 +16,8 @@ builder.Services.AddWindowsService(options =>
     options.ServiceName = "Worker EShop";
 });
 
-var eshopBd = builder.Configuration.GetConnectionString(ESHOP_BD) ?? Environment.GetEnvironmentVariable(ESHOP_BD);
-
 builder.Services.AddDbContextFactory<EShopDbContext>(options =>
-                    options.UseOracle(eshopBd));
+                    options.UseOracle(builder.Configuration.GetConnectionString(ESHOP_BD)));
 
 builder.Services.AddTransient<ISesionRepository, SesionRepository>();
 
