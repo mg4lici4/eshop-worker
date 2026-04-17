@@ -13,23 +13,23 @@ namespace EShop.Infraestructure.Repositories
             var fechaActual = FechaHelper.ActualUTC();
             await using var context = await dbContextFactory.CreateDbContextAsync();
             await context.Sesiones
-                .Where(s => s.FechaExpiracion <= fechaActual && s.Activo == 1)
+                .Where(s => s.FechaExpiracion <= fechaActual && (s.Estado == 0 || s.Estado == 1))
                 .ExecuteUpdateAsync(s => s
-                .SetProperty(x => x.Activo, 0)
+                .SetProperty(x => x.Estado, 2)
                 .SetProperty(x => x.FechaActualizacion, fechaActual));
         }
 
         public async Task<IReadOnlyList<SesionEntity>> ObtenerActivasAsync()
         {
             await using var context = await dbContextFactory.CreateDbContextAsync();
-            return await context.Sesiones.AsNoTracking().Where(s => s.Activo == 1).ToListAsync();
+            return await context.Sesiones.AsNoTracking().Where(s => s.Estado == 1).ToListAsync();
         }
 
         public async Task<IReadOnlyList<SesionEntity>> ObtenerExpiradasAsync()
         {
             var fechaActual = FechaHelper.ActualUTC();
             await using var context = await dbContextFactory.CreateDbContextAsync();
-            return await context.Sesiones.AsNoTracking().Where(s => s.FechaExpiracion <= fechaActual && s.Activo == 1).ToListAsync();
+            return await context.Sesiones.AsNoTracking().Where(s => s.Estado == 2).ToListAsync();
         }
 
         public async Task <IReadOnlyList<SesionEntity>> ObtenerRegistrosAsync()
